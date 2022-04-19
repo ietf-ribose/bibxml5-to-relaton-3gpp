@@ -19,19 +19,13 @@ class CreateMapping
   end
 
   def series_info_value_to_relaton_filename(value)
-    # matches = /(?<number>\d+\.\d+) (?<rel>\d)\.(?<revision>[\d.]+)/.match(value)
     matches = /(?<serie>TR|TS) (?<number>\d+\.[\da-z-]+)(?: (?<rel>\d)\.(?<revision>[\d.]+))?/.match(value)
     # use mapping here
     @relaton_mapping.each do |filename, docid|
-      if matches[:revision]
-        next unless docid.include?("3GPP #{matches[:serie]} #{matches[:number]}") &&
-          docid.include?("#{matches[:rel]}\.#{matches[:revision]}")
-        # next unless /^3GPP #{matches[:serie]} #{matches[:number]}.*#{matches[:rel]}\.#{matches[:revision]}/.match?(docid)
-      else
-        next unless docid.include?("3GPP #{matches[:serie]} #{matches[:number]}")
-        # next unless /^3GPP #{matches[:serie]} #{matches[:number]}/.match?(docid)
+      if (docid.include?("3GPP TR #{matches[:number]}") || docid.include?("3GPP TS #{matches[:number]}")) &&
+        (!matches[:revision] || docid.include?("#{matches[:rel]}\.#{matches[:revision]}"))
+        return filename
       end
-      return filename
     end
 
     warn "no matches found for #{value}"

@@ -10,7 +10,8 @@ RSpec.describe CreateMapping do
     { bibxml_filename_tr => series_info_value_tr,
       bibxml_filename_ts => series_info_value_ts,
       "reference.3GPP.33.917.xml" => "TR 33.917",
-      "reference.3GPP.02.04.xml" => "TS 02.04 3.7.1"
+      "reference.3GPP.02.04.xml" => "TS 02.04 3.7.1",
+      "reference.3GPP.29.949.xml" => "TS 29.949 0.1.0"
     }
   }
 
@@ -19,7 +20,8 @@ RSpec.describe CreateMapping do
       relaton_filename_ts => relaton_docid_ts,
       "TR_33.917_REL-6_0.0.1.yaml" => "3GPP TR 33.917:Rel-6/0.0.1",
       "TR_33.917_REL-6_0.0.2.yaml" => "3GPP TR 33.917:Rel-6/0.0.2",
-      "TS_02.04_PH1_3.7.1.yaml" => "3GPP TS 02.04:Ph1/3.7.1"
+      "TS_02.04_PH1_3.7.1.yaml" => "3GPP TS 02.04:Ph1/3.7.1",
+      "TR_29.949_REL-12_0.1.0.yaml" => "3GPP TR 29.949:Rel-12/0.1.0"
       }
     # { relaton_filename => relaton_docid }
   }
@@ -125,6 +127,7 @@ RSpec.describe CreateMapping do
     expect(subject.series_info_value_to_relaton_filename(series_info_value_ts)).to eq(relaton_filename_ts)
     expect(subject.series_info_value_to_relaton_filename("TR 33.917")).to eq("TR_33.917_REL-6_0.0.1.yaml")
     expect(subject.series_info_value_to_relaton_filename("TS 02.04 3.7.1")).to eq("TS_02.04_PH1_3.7.1.yaml")
+    expect(subject.series_info_value_to_relaton_filename("TS 29.949 0.1.0")).to eq("TR_29.949_REL-12_0.1.0.yaml")
   end
 
   it "extracts docid from relaton file" do
@@ -135,6 +138,7 @@ RSpec.describe CreateMapping do
     expect(subject.mapping).to eq([Mapping.new(bibxml_filename_tr, relaton_docid_tr),
                                    Mapping.new(bibxml_filename_ts, relaton_docid_ts),
                                    Mapping.new("reference.3GPP.33.917.xml", "3GPP TR 33.917:Rel-6/0.0.1"),
-                                   Mapping.new("reference.3GPP.02.04.xml", "3GPP TS 02.04:Ph1/3.7.1")])
+                                   Mapping.new("reference.3GPP.02.04.xml", "3GPP TS 02.04:Ph1/3.7.1"),
+                                   Mapping.new("reference.3GPP.29.949.xml", "3GPP TR 29.949:Rel-12/0.1.0")])
   end
 end
